@@ -24,7 +24,7 @@ StudentFolio adalah aplikasi berbasis PHP + MySQL yang berfungsi sebagai platfor
 ## Pengaturan Lingkungan Pengembangan (Local)
 1. Pastikan XAMPP atau stack serupa terpasang.
 2. Copy folder proyek ke direktori web server (mis. `C:\xampp\htdocs\studentfolio`).
-3. Buat database MySQL mis. `studentfolio_db`.
+3. Buat database MySQL mis. `studentfolio`.
 4. Edit `config/koneksi.php` dengan kredensial database Anda.
 
 Contoh `config/koneksi.php` minimal:
@@ -46,7 +46,7 @@ if (!$koneksi) {
 Contoh berikut memberi tabel dasar yang sesuai dengan fitur yang terlihat di kode.
 
 ```sql
-CREATE DATABASE studentfolio_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE studentfolio CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE studentfolio_db;
 
 CREATE TABLE users (
