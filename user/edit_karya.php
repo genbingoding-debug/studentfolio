@@ -3,6 +3,8 @@
 require '../includes/functions.php';
 require_user();
 
+// $conn sudah tersedia dari includes/functions.php
+
 $id_portfolio = $_GET['id'] ?? 0;
 $id_user = $_SESSION['id_user'];
 

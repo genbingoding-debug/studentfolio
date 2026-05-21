@@ -3,8 +3,7 @@
 require '../includes/functions.php';
 require_user();
 
-// Pastikan koneksi database tersedia
-global $conn;
+
 
 
 if (isset($_POST['simpan'])) {

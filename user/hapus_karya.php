@@ -3,37 +3,45 @@
 require '../includes/functions.php';
 require_user();
 
-// $conn sudah di-load di includes/functions.php (melalui config/koneksi.php)
+
 
 
 $id_portfolio = $_GET['id'] ?? 0;
 $id_user = $_SESSION['id_user'];
 
-// 1. Cari nama file bukti untuk dihapus dari folder
-$stmt = $conn->prepare("SELECT file_bukti FROM portfolio_data WHERE id_portfolio = ? AND id_user = ?");
+// $conn sudah di-load oleh includes/functions.php (melalui config/koneksi.php)
+
+// 1) Ambil nama file bukti
+$stmt = $conn->prepare(
+    "SELECT file_bukti FROM portfolio_data WHERE id_portfolio = ? AND id_user = ?"
+);
 $stmt->bind_param('ii', $id_portfolio, $id_user);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
+if ($result && $result->num_rows > 0) {
     $data = $result->fetch_assoc();
-    $file_path = "../uploads/bukti_karya/" . $data['file_bukti'];
+    $file_bukti = $data['file_bukti'] ?? '';
 
-    // 2. Hapus file fisik jika benar-benar ada
-    if (file_exists($file_path)) {
+    $file_path = "../uploads/bukti_karya/" . $file_bukti;
+
+    // 2) Hapus file fisik jika ada
+    if (!empty($file_bukti) && file_exists($file_path)) {
         unlink($file_path);
     }
 
-    // 3. Hapus baris data dari database
-    $stmt = $conn->prepare("DELETE FROM portfolio_data WHERE id_portfolio = ? AND id_user = ?");
+    // 3) Hapus baris data dari database
+    $stmt = $conn->prepare(
+        "DELETE FROM portfolio_data WHERE id_portfolio = ? AND id_user = ?"
+    );
     $stmt->bind_param('ii', $id_portfolio, $id_user);
     $stmt->execute();
 }
 
-// Set pesan informatif sebelum redirect
+// Notifikasi informatif
 $_SESSION['message'] = 'Karya berhasil dihapus.';
 $_SESSION['message_type'] = 'success';
 
-// Tendang balik ke dashboard
 redirect('dashboard.php');
 ?>
+
