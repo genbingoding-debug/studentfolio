@@ -35,7 +35,7 @@ Jika Anda meletakkan proyek dalam subfolder lain, sesuaikan URL.
 
 ## Contoh Alur Menyiapkan Database Cepat (PHPMyAdmin)
 1. Buka `http://localhost/phpmyadmin`.
-2. Klik `New` → masukkan nama database `studentfolio_db` → Create.
+2. Klik `New` → masukkan nama database `studentfolio` → Create.
 3. Gunakan tab SQL untuk menempelkan dan menjalankan skrip yang ada di `README_CODE.md`.
 
 ## Konfigurasi Penting
