@@ -1,0 +1,31 @@
+/* Common utilities and site-wide defaults */
+body {
+    background-color: #f8f9fa;
+}
+.avatar-sm {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+.text-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.admin-action-select {
+    width: 120px;
+}
+.btn {
+    border-radius: 0.65rem;
+}
+.card {
+    border-radius: 1rem !important;
+}
+@media (max-width: 767px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

@@ -1,0 +1,46 @@
+/* User page styles */
+.search-form {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.search-input {
+    min-width: 220px;
+    width: 100%;
+}
+.btn-add-item {
+    min-width: 140px;
+}
+.portfolio-card {
+    min-height: 280px;
+}
+@media (max-width: 767px) {
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-input {
+        min-width: 100%;
+    }
+    .btn-add-item {
+        width: 100%;
+        min-width: 0;
+    }
+    .portfolio-card .card-footer {
+        flex-direction: column;
+        gap: .75rem;
+    }
+    .portfolio-card .card-footer .btn {
+        width: 100%;
+    }
+}
+
+.bukti-viewer img,
+.bukti-viewer iframe {
+    width: 100%;
+    height: 80vh;
+    border-radius: 0 0 .75rem .75rem;
+}
+
+.bukti-viewer .p-4 {
+    min-height: 24rem;
+}

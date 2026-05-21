@@ -1,0 +1,33 @@
+/* Navbar specific styles */
+nav.navbar {
+    min-height: 72px;
+}
+.navbar-brand {
+    letter-spacing: .03em;
+}
+.navbar-nav .nav-item .nav-link {
+    color: rgba(255,255,255,.95);
+}
+.navbar-nav .nav-item .nav-link:hover {
+    color: #ffffff;
+}
+.navbar-nav .nav-item .btn {
+    min-width: 100px;
+}
+@media (max-width: 767px) {
+    .navbar-brand {
+        font-size: 1.05rem;
+    }
+    .navbar-nav .nav-item {
+        margin-bottom: .4rem;
+    }
+    .navbar-nav .nav-item .btn,
+    .navbar-nav .nav-item .nav-link {
+        width: 100%;
+        text-align: center;
+    }
+    .navbar-nav .nav-item.d-flex img.avatar-sm {
+        width: 32px;
+        height: 32px;
+    }
+}

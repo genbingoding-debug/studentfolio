@@ -1,0 +1,15 @@
+/* Lokasi: assets/css/style.css */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+button,
+a {
+    transition: all 0.15s ease-in-out;
+}

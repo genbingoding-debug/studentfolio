@@ -1,0 +1,29 @@
+/* Forms and input styles */
+.auth-card {
+    border-radius: 1rem;
+}
+.auth-card .form-label {
+    font-weight: 600;
+}
+.auth-card .btn {
+    transition: transform 0.2s ease;
+}
+.auth-card .btn:hover {
+    transform: translateY(-1px);
+}
+.form-text {
+    font-size: 0.9rem;
+}
+@media (max-width: 767px) {
+    .auth-card {
+        padding: 1.5rem !important;
+    }
+    .auth-card .form-control,
+    .auth-card .form-select,
+    .auth-card .btn {
+        width: 100%;
+    }
+    .auth-card .btn + .btn {
+        margin-top: 0.75rem;
+    }
+}
