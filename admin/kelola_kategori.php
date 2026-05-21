@@ -105,7 +105,7 @@ include '../includes/header.php';
     <div class="col-md-4">
         <div class="card shadow-sm border-0">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Tambah Jenis Baru</h5>
+                <h5 class="mb-0">Tambah Jenis Karya Baru</h5>
             </div>
             <div class="card-body">
                 <form action="" method="POST">
@@ -132,7 +132,7 @@ include '../includes/header.php';
                                 <th class="px-3" width="8%">No</th>
                                 <th width="35%">Nama Kategori</th>
                                 <th width="25%" class="text-center">Jumlah Karya</th>
-                                <th width="32%" class="text-center">Aksi Operasi</th>
+                                <th width="32%" class="text-center">Ubah atau Hapus Kategori</th>
                             </tr>
                         </thead>
                         <tbody>

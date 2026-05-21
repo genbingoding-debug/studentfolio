@@ -84,7 +84,7 @@ include '../includes/header.php';
                         <th>Username</th>
                         <th>Role Saat Ini</th>
                         <th>Jumlah Karya</th>
-                        <th class="text-center">Aksi Ubah Role</th>
+                        <th class="text-center">Ubah Role</th>
                     </tr>
                 </thead>
                 <tbody>
