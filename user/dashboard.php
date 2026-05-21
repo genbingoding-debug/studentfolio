@@ -23,25 +23,63 @@ if (isset($_GET['cari'])) {
     $query = $stmt->get_result();
 }
 
+$nama_user = $_SESSION['nama'] ?? 'Teman';
 $page_css = ['user.css'];
 include '../includes/header.php';
 ?>
 
-<div class="row mt-4 mb-4 align-items-center">
-    <div class="col-md-6">
-        <h3 class="fw-bold">Portfolio Saya</h3>
-        <p class="text-muted mb-0">Kelola rekam jejak karyamu di sini.</p>
+<div class="row mt-4 mb-4">
+    <div class="col-lg-7 mb-3">
+        <div class="card shadow-sm dashboard-hero-card">
+            <div class="card-body d-flex flex-column justify-content-center h-100">
+                <div class="dashboard-hero-text">
+                    <h3 class="fw-bold mb-3">Halo, <?= htmlspecialchars($nama_user); ?>!</h3>
+                    <p class="text-muted mb-4">Tambah portofolio kamu sekarang dengan mudah. Klik tombol di bawah untuk unggah karya lengkap dengan bukti dan tanggal kegiatan.</p>
+                    <a href="tambah_karya.php" class="btn btn-primary btn-lg fw-bold dashboard-cta-btn">+ Tambah Karya</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6 text-md-end mt-3 mt-md-0 d-flex justify-content-md-end gap-2 flex-wrap">
-        <form action="" method="GET" class="d-flex search-form">
-            <input type="text" name="cari" class="form-control me-2 search-input" placeholder="Cari judul/kategori..." value="<?= htmlspecialchars($keyword); ?>">
-            <button type="submit" class="btn btn-outline-primary">Cari</button>
+    <div class="col-lg-5 mb-3">
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="card shadow-sm border-0 dashboard-info-card">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-3">Ringkasan Portfolio</h6>
+                        <div class="d-flex align-items-center justify-content-between gap-3">
+                            <div>
+                                <h2 class="mb-1"><?= mysqli_num_rows($query); ?></h2>
+                                <p class="mb-0 te   xt-muted">Total karya saat ini</p>
+                            </div>
+                            <div class="dashboard-info-icon">📁</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card shadow-sm border-0 dashboard-info-card">
+                    <div class="card-body">
+                        <h6 class="text-uppercase text-muted mb-3">Tips cepat</h6>
+                        <ul class="dashboard-tip-list mb-0">
+                            <li>Klik + Tambah Karya untuk mengunggah bukti.</li>
+                            <li>Gunakan kata kunci di pencarian untuk menemukan karya.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12 col-md-8 mx-auto">
+        <form action="" method="GET" class="input-group search-input-group">
+            <input type="text" name="cari" class="form-control" placeholder="Cari judul atau kategori..." value="<?= htmlspecialchars($keyword); ?>">
+            <button type="submit" class="btn btn-outline-primary search-icon-btn" aria-label="Cari">🔍</button>
             <?php if($keyword): ?>
-                <a href="dashboard.php" class="btn btn-outline-danger ms-2">Reset</a>
+                <a href="dashboard.php" class="btn btn-outline-secondary search-clear-btn" aria-label="Reset pencarian">✕</a>
             <?php endif; ?>
         </form>
-        
-        <a href="tambah_karya.php" class="btn btn-primary fw-bold shadow-sm btn-add-item">+ Tambah</a>
     </div>
 </div>
 
@@ -74,10 +112,15 @@ include '../includes/header.php';
     <?php endwhile; ?>
     
     <?php if(mysqli_num_rows($query) == 0): ?>
-        <div class="col-12 text-center py-5">
-            <h5 class="text-muted">
-                <?= $keyword ? "Tidak ada karya yang cocok dengan pencarian '$keyword'." : "Belum ada karya. Yuk, tambah sekarang!"; ?>
-            </h5>
+        <div class="col-12">
+            <div class="card shadow-sm border-0 empty-state-card">
+                <div class="card-body text-center">
+                    <div class="empty-state-icon">🎯</div>
+                    <h4 class="fw-bold mb-3">Belum ada portfolio</h4>
+                    <p class="text-muted mb-4">Mulai dengan menambahkan karya pertama kamu. Prosesnya sederhana dan cepat.</p>
+                    <a href="tambah_karya.php" class="btn btn-primary btn-lg fw-bold">+ Tambah Karya Sekarang</a>
+                </div>
+            </div>
         </div>
     <?php endif; ?>
 </div>

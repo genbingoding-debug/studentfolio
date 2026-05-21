@@ -1,29 +1,73 @@
 /* User page styles */
-.search-form {
-    flex-wrap: wrap;
-    gap: 0.5rem;
+.dashboard-hero-card,
+.dashboard-info-card,
+.empty-state-card {
+    border-radius: 1rem;
 }
-.search-input {
+.dashboard-hero-card {
+    min-height: 100%;
+}
+.dashboard-cta-btn {
     min-width: 220px;
-    width: 100%;
 }
-.btn-add-item {
-    min-width: 140px;
+.dashboard-info-icon {
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: .75rem;
+    background: #e7f0ff;
+    font-size: 1.5rem;
+}
+.dashboard-tip-list {
+    padding-left: 1rem;
+    margin-bottom: 0;
+}
+.dashboard-tip-list li {
+    margin-bottom: .75rem;
+}
+.search-input-group {
+    max-width: 720px;
+    margin: 0 auto;
+}
+.search-icon-btn,
+.search-clear-btn {
+    min-width: 4rem;
+    padding: 0.75rem 0.9rem;
+}
+.search-icon-btn {
+    font-size: 1.1rem;
+}
+.search-clear-btn {
+    color: #6c757d;
 }
 .portfolio-card {
-    min-height: 280px;
+    min-height: 320px;
+}
+.portfolio-card .card-body {
+    min-height: 230px;
+}
+.empty-state-card {
+    padding: 3rem 1rem;
+}
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
 }
 @media (max-width: 767px) {
-    .search-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .search-input {
-        min-width: 100%;
-    }
-    .btn-add-item {
+    .dashboard-cta-btn {
         width: 100%;
-        min-width: 0;
+    }
+    .search-input-group {
+        flex-direction: column;
+    }
+    .search-input-group .form-control,
+    .search-input-group .btn {
+        width: 100%;
+    }
+    .search-input-group .btn:not(:last-child) {
+        margin-bottom: .75rem;
     }
     .portfolio-card .card-footer {
         flex-direction: column;
