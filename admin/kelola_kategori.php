@@ -71,7 +71,7 @@ if (isset($_GET['hapus'])) {
 // ==========================================
 // 4. AMBIL DATA UNTUK DITAMPILKAN (READ)
 // ==========================================
-$result = $conn->query("SELECT * FROM kategori_portfolio ORDER BY id_kategori DESC");
+$result = $conn->query("SELECT k.*, COUNT(p.id_portfolio) AS total_portfolio FROM kategori_portfolio k LEFT JOIN portfolio_data p ON p.id_kategori = k.id_kategori GROUP BY k.id_kategori ORDER BY k.id_kategori DESC");
 
 $page_css = ['admin.css'];
 include '../includes/header.php';
@@ -83,16 +83,22 @@ include '../includes/header.php';
         <p class="text-muted mb-0">Atur kategori portfolio agar pengguna dapat memilih jenis karya dengan jelas.</p>
     </div>
     <div class="col-md-4 text-md-end mt-3 mt-md-0">
-        <a href="dashboard.php" class="btn btn-primary">Kembali ke Dashboard</a>
+        <a href="dashboard.php" class="btn btn-outline-secondary">Kembali ke Dashboard</a>
     </div>
 </div>
 
 <?php if ($pesan_sukses): ?>
-    <div class="alert alert-success alert-dismissible fade show"><?= $pesan_sukses; ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+        <?= $pesan_sukses; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 <?php endif; ?>
 
 <?php if ($pesan_error): ?>
-    <div class="alert alert-danger alert-dismissible fade show"><?= $pesan_error; ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+        <?= $pesan_error; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 <?php endif; ?>
 
 <div class="row g-4">
@@ -119,29 +125,32 @@ include '../includes/header.php';
                 <h5 class="mb-0">Daftar Kategori Terinput</h5>
             </div>
             <div class="card-body p-0">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="px-3" width="10%">No</th>
-                            <th width="50%">Nama Kategori</th>
-                            <th width="40%" class="text-center">Aksi Operasi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="px-3" width="8%">No</th>
+                                <th width="35%">Nama Kategori</th>
+                                <th width="25%" class="text-center">Jumlah Karya</th>
+                                <th width="32%" class="text-center">Aksi Operasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <?php 
                         $no = 1;
                         while ($row = mysqli_fetch_assoc($result)): 
                         ?>
                         <tr>
                             <td class="px-3"><?= $no++; ?></td>
-                            <td><strong><?= htmlspecialchars($row['nama_kategori']); ?></strong></td>
+                            <td><strong><?= esc($row['nama_kategori']); ?></strong></td>
+                            <td class="text-center"><span class="badge bg-info text-dark"><?= intval($row['total_portfolio']); ?> karya</span></td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
                                     <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $row['id_kategori']; ?>">
                                         Ubah
                                     </button>
                                     
-                                    <a href="kelola_kategori.php?hapus=<?= $row['id_kategori']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus kategori ini?');">
+                                    <a href="kelola_kategori.php?hapus=<?= $row['id_kategori']; ?>" class="btn btn-sm btn-danger confirm-link" data-confirm="Yakin ingin menghapus kategori ini?">
                                         Hapus
                                     </a>
                                 </div>
@@ -153,7 +162,7 @@ include '../includes/header.php';
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">Ubah Nama Kategori</h5>
-                                        <button type="button" class="btn-close" data-bs-shadow="none" data-bs-dismiss="modal"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <form action="" method="POST">
                                         <div class="modal-body">

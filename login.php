@@ -56,6 +56,10 @@ include 'includes/header.php';
                 </div>
                 <button type="submit" name="login" class="btn btn-primary w-100">Masuk</button>
             </form>
+            <div class="text-center mt-3">
+                <span class="text-muted">Belum punya akun? </span>
+                <a href="register.php" class="text-decoration-none fw-bold">Daftar di sini</a>
+            </div>
         </div>
     </div>
 </div>

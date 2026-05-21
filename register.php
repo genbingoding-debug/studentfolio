@@ -98,7 +98,7 @@ include 'includes/header.php';
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Password</label>
                     <input type="password" name="password" class="form-control" required>
-                    <div class="form-text">Min. 9 karakter, harus mengandung kombinasi huruf & angka.</div>
+                    <div class="form-text">Min. 8 karakter, harus mengandung kombinasi huruf & angka.</div>
                 </div>
 
                 <div class="mb-4">

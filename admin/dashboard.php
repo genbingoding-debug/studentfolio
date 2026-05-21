@@ -58,6 +58,15 @@ include '../includes/header.php';
             <div class="col-md-4">
                 <div class="card shadow-sm border-0 h-100 action-card">
                     <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Kelola Karya</h5>
+                        <p class="card-text text-muted">Lihat dan kelola semua karya yang diunggah oleh pengguna.</p>
+                        <a href="kelola_portfolio.php" class="btn btn-outline-success mt-auto">Buka Sekarang</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 h-100 action-card">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Keluar</h5>
                         <p class="card-text text-muted">Selesai mengelola? Langsung keluar dari ruang kendali admin.</p>
                         <a href="../logout.php" class="btn btn-outline-danger mt-auto">Logout</a>
