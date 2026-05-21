@@ -89,6 +89,7 @@ include '../includes/header.php';
                 <th>Judul Karya</th>
                 <th>Pemilik</th>
                 <th>Kategori</th>
+                <th>Tanggal</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
@@ -102,6 +103,7 @@ include '../includes/header.php';
                     <small class="text-muted">@<?= esc($row['username'] ?? 'unknown'); ?></small>
                 </td>
                 <td><?= esc($row['nama_kategori'] ?? 'Tanpa kategori'); ?></td>
+                <td><?= $row['tanggal_kegiatan'] ? date('d M Y', strtotime($row['tanggal_kegiatan'])) : '-'; ?></td>
                 <td class="text-center">
                     <div class="d-flex justify-content-center gap-2">
                         <a href="view_bukti.php?id=<?= $row['id_portfolio']; ?>" class="btn btn-sm btn-outline-primary">Lihat</a>

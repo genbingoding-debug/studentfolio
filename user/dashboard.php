@@ -54,6 +54,10 @@ include '../includes/header.php';
                     <h5 class="fw-bold text-truncate" title="<?= htmlspecialchars($row['judul_karya']); ?>">
                         <?= htmlspecialchars($row['judul_karya']); ?>
                     </h5>
+                    <p class="text-muted small mb-2">
+                        <strong>Tanggal Kegiatan:</strong>
+                        <?= $row['tanggal_kegiatan'] ? htmlspecialchars(date('d M Y', strtotime($row['tanggal_kegiatan']))) : '-'; ?>
+                    </p>
                     <p class="text-muted small text-clamp-3">
                         <?= htmlspecialchars($row['deskripsi']); ?>
                     </p>

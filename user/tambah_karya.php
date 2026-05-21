@@ -8,11 +8,17 @@ if (isset($_POST['simpan'])) {
     $id_kat = $_POST['id_kategori'];
     $judul = trim($_POST['judul']);
     $deskripsi = trim($_POST['deskripsi']);
+    $tanggal_kegiatan = trim($_POST['tanggal_kegiatan']);
 
-    // Logika Upload File dengan Validasi Ketat
-    $nama_file = $_FILES['bukti']['name'];
-    $tmp_file = $_FILES['bukti']['tmp_name'];
-    $ukuran_file = $_FILES['bukti']['size'];
+    if (empty($tanggal_kegiatan)) {
+        $error = 'Tanggal kegiatan diperlukan.';
+    }
+
+    if (!isset($error)) {
+        // Logika Upload File dengan Validasi Ketat
+        $nama_file = $_FILES['bukti']['name'];
+        $tmp_file = $_FILES['bukti']['tmp_name'];
+        $ukuran_file = $_FILES['bukti']['size'];
 
     // 1. Whitelist Ekstensi (Hanya file relevan yang diizinkan)
     $ekstensi_diizinkan = ['pdf', 'zip', 'jpg', 'jpeg', 'png'];
@@ -26,8 +32,8 @@ if (isset($_POST['simpan'])) {
             $path = "../uploads/bukti_karya/" . $file_baru;
 
             if (move_uploaded_file($tmp_file, $path)) {
-                $stmt = $conn->prepare("INSERT INTO portfolio_data (id_user, id_kategori, judul_karya, deskripsi, file_bukti) VALUES (?, ?, ?, ?, ?)");
-                $stmt->bind_param('iisss', $id_user, $id_kat, $judul, $deskripsi, $file_baru);
+                $stmt = $conn->prepare("INSERT INTO portfolio_data (id_user, id_kategori, judul_karya, deskripsi, file_bukti, tanggal_kegiatan) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param('iissss', $id_user, $id_kat, $judul, $deskripsi, $file_baru, $tanggal_kegiatan);
                 if ($stmt->execute()) {
                     redirect('dashboard.php');
                 } else {
@@ -41,6 +47,7 @@ if (isset($_POST['simpan'])) {
         }
     } else {
         $error = "Ditolak: Terdeteksi file tidak aman! Hanya boleh PDF, ZIP, JPG, dan PNG.";
+    }
     }
 }
 
@@ -81,6 +88,10 @@ include '../includes/header.php';
                             <option value="<?= $k['id_kategori']; ?>"><?= htmlspecialchars($k['nama_kategori']); ?></option>
                         <?php endforeach; ?>
                     </select>
+                </div>
+                <div class="mb-3">
+                    <label>Tanggal Kegiatan</label>
+                    <input type="date" name="tanggal_kegiatan" class="form-control" value="<?= date('Y-m-d'); ?>" required>
                 </div>
                 <div class="mb-3">
                     <label>Deskripsi</label>

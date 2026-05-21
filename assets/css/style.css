@@ -13,3 +13,14 @@ button,
 a {
     transition: all 0.15s ease-in-out;
 }
+.logo-navbar {
+    /* 1. Atur tinggi atau lebar sesuai keinginan Anda */
+    height: 40px; 
+    width: auto;  /* Biar lebarnya menyesuaikan otomatis dan tidak gepeng */
+
+    /* 2. Opsional: Mengatur jarak di sekitar gambar */
+    margin-top: -5px; 
+    
+    /* 3. Menjaga kualitas gambar tetap tajam saat di-resize */
+    object-fit: contain; 
+}

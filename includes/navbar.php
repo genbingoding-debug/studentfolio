@@ -4,7 +4,9 @@ $base_url = defined('BASE_URL') ? BASE_URL : '';
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow-sm">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="<?= $base_url ?>index.php">StudentFolio</a>
+<a class="navbar-brand fw-bold bg-white px-1 py-1 rounded-4 d-inline-flex align-items-center" href="<?= $base_url ?>index.php" style="height: 40px;">
+    <img src="<?= $base_url ?>assets/img/StudentFolio-removebg-preview.png" alt="Logo" class="logo-navbar" style="height: 100px; width: auto;">
+</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

@@ -15,15 +15,36 @@ $data = $result->fetch_assoc();
 
 if (!$data) { die("Data tidak ditemukan atau bukan milikmu!"); }
 
+// Ambil daftar kategori untuk dropdown
+$kategori = [];
+$kategori_result = fetch_categories($conn);
+while ($row = $kategori_result->fetch_assoc()) {
+    $kategori[] = $row;
+}
+
 // 2. Proses Update Data
 if (isset($_POST['update'])) {
     $judul = trim($_POST['judul']);
     $deskripsi = trim($_POST['deskripsi']);
-    
-    // Variabel untuk file baru
-    $nama_file = $_FILES['bukti']['name'];
-    $tmp_file = $_FILES['bukti']['tmp_name'];
-    $ukuran_file = $_FILES['bukti']['size'];
+    $tanggal_kegiatan = trim($_POST['tanggal_kegiatan']);
+    $id_kategori = isset($_POST['id_kategori']) ? (int) $_POST['id_kategori'] : $data['id_kategori'];
+    $valid_category = false;
+    foreach ($kategori as $kat) {
+        if ($kat['id_kategori'] === $id_kategori) {
+            $valid_category = true;
+            break;
+        }
+    }
+
+    if (!$valid_category) {
+        $error = 'Kategori tidak valid.';
+    } elseif (empty($tanggal_kegiatan)) {
+        $error = 'Tanggal kegiatan tidak boleh kosong.';
+    } else {
+        // Variabel untuk file baru
+        $nama_file = $_FILES['bukti']['name'];
+        $tmp_file = $_FILES['bukti']['tmp_name'];
+        $ukuran_file = $_FILES['bukti']['size'];
 
     // JIKA ADA FILE BARU YANG DI-UPLOAD
     if (!empty($nama_file)) {
@@ -46,8 +67,8 @@ if (isset($_POST['update'])) {
                     }
 
                     // Update database beserta nama file barunya
-                    $stmt = $conn->prepare("UPDATE portfolio_data SET judul_karya = ?, deskripsi = ?, file_bukti = ? WHERE id_portfolio = ? AND id_user = ?");
-                    $stmt->bind_param('sssii', $judul, $deskripsi, $file_baru, $id_portfolio, $id_user);
+                    $stmt = $conn->prepare("UPDATE portfolio_data SET judul_karya = ?, deskripsi = ?, id_kategori = ?, tanggal_kegiatan = ?, file_bukti = ? WHERE id_portfolio = ? AND id_user = ?");
+                    $stmt->bind_param('ssissii', $judul, $deskripsi, $id_kategori, $tanggal_kegiatan, $file_baru, $id_portfolio, $id_user);
                     if ($stmt->execute()) {
                         redirect('dashboard.php');
                     } else {
@@ -65,13 +86,14 @@ if (isset($_POST['update'])) {
     } 
     // JIKA TIDAK ADA FILE BARU (Hanya ubah teks)
     else {
-        $stmt = $conn->prepare("UPDATE portfolio_data SET judul_karya = ?, deskripsi = ? WHERE id_portfolio = ? AND id_user = ?");
-        $stmt->bind_param('ssii', $judul, $deskripsi, $id_portfolio, $id_user);
+        $stmt = $conn->prepare("UPDATE portfolio_data SET judul_karya = ?, deskripsi = ?, id_kategori = ?, tanggal_kegiatan = ? WHERE id_portfolio = ? AND id_user = ?");
+        $stmt->bind_param('ssissi', $judul, $deskripsi, $id_kategori, $tanggal_kegiatan, $id_portfolio, $id_user);
         if ($stmt->execute()) {
             redirect('dashboard.php');
         } else {
             $error = "Gagal memperbarui karya: " . $stmt->error;
         }
+    }
     }
 }
 
@@ -92,6 +114,19 @@ include '../includes/header.php';
                     <input type="text" name="judul" class="form-control" value="<?= htmlspecialchars($data['judul_karya']); ?>" required>
                 </div>
                 
+                <div class="mb-3">
+                    <label>Tanggal Kegiatan</label>
+                    <input type="date" name="tanggal_kegiatan" class="form-control" value="<?= htmlspecialchars($data['tanggal_kegiatan'] ?? date('Y-m-d')); ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label>Kategori</label>
+                    <select name="id_kategori" class="form-select" required>
+                        <?php foreach ($kategori as $kat): ?>
+                            <option value="<?= $kat['id_kategori']; ?>" <?= $kat['id_kategori'] === (int)$data['id_kategori'] ? 'selected' : ''; ?>><?= htmlspecialchars($kat['nama_kategori']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
                 <div class="mb-3">
                     <label>Deskripsi</label>
                     <textarea name="deskripsi" class="form-control" rows="4" required><?= htmlspecialchars($data['deskripsi']); ?></textarea>

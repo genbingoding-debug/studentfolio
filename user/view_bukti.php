@@ -45,6 +45,7 @@ include '../includes/header.php';
                 <div class="card-body">
                     <h5 class="fw-bold mb-3"><?= htmlspecialchars($data['judul_karya']); ?></h5>
                     <p class="text-muted mb-2"><strong>Kategori:</strong> <?= htmlspecialchars($data['nama_kategori']); ?></p>
+                    <p class="text-muted mb-2"><strong>Tanggal Kegiatan:</strong> <?= $data['tanggal_kegiatan'] ? date('d M Y', strtotime($data['tanggal_kegiatan'])) : '-'; ?></p>
                     <p class="text-muted mb-3"><?= nl2br(htmlspecialchars($data['deskripsi'])); ?></p>
                     <a href="dashboard.php" class="btn btn-primary w-100 mb-2">Kembali ke Portfolio</a>
                     <a href="../uploads/bukti_karya/<?= $fileName; ?>" target="_blank" class="btn btn-outline-secondary w-100">Buka Raw File</a>

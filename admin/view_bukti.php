@@ -47,6 +47,7 @@ include '../includes/header.php';
                     <p class="text-muted mb-2"><strong>Pemilik:</strong> <?= esc($data['pemilik'] ?? 'Tidak diketahui'); ?></p>
                     <p class="text-muted mb-2"><strong>Username:</strong> <?= esc($data['username'] ?? 'unknown'); ?></p>
                     <p class="text-muted mb-2"><strong>Kategori:</strong> <?= esc($data['nama_kategori'] ?? 'Tanpa kategori'); ?></p>
+                    <p class="text-muted mb-2"><strong>Tanggal Kegiatan:</strong> <?= $data['tanggal_kegiatan'] ? date('d M Y', strtotime($data['tanggal_kegiatan'])) : '-'; ?></p>
                     <p class="text-muted mb-3"><?= nl2br(esc($data['deskripsi'])); ?></p>
                     <a href="kelola_portfolio.php" class="btn btn-primary w-100 mb-2">Kembali</a>
                     <a href="../uploads/bukti_karya/<?= $fileName; ?>" target="_blank" class="btn btn-outline-secondary w-100">Buka File Bukti</a>
