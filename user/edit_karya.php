@@ -70,10 +70,13 @@ if (isset($_POST['update'])) {
                     $stmt = $conn->prepare("UPDATE portfolio_data SET judul_karya = ?, deskripsi = ?, id_kategori = ?, tanggal_kegiatan = ?, file_bukti = ? WHERE id_portfolio = ? AND id_user = ?");
                     $stmt->bind_param('ssissii', $judul, $deskripsi, $id_kategori, $tanggal_kegiatan, $file_baru, $id_portfolio, $id_user);
                     if ($stmt->execute()) {
+                        $_SESSION['message'] = 'Karya berhasil diperbarui.';
+                        $_SESSION['message_type'] = 'success';
                         redirect('dashboard.php');
                     } else {
                         $error = "Gagal memperbarui karya: " . $stmt->error;
                     }
+
                 } else {
                     $error = "Sistem gagal menyimpan file ke folder server.";
                 }
@@ -89,6 +92,8 @@ if (isset($_POST['update'])) {
         $stmt = $conn->prepare("UPDATE portfolio_data SET judul_karya = ?, deskripsi = ?, id_kategori = ?, tanggal_kegiatan = ? WHERE id_portfolio = ? AND id_user = ?");
         $stmt->bind_param('ssissi', $judul, $deskripsi, $id_kategori, $tanggal_kegiatan, $id_portfolio, $id_user);
         if ($stmt->execute()) {
+            $_SESSION['message'] = 'Karya berhasil diperbarui.';
+            $_SESSION['message_type'] = 'success';
             redirect('dashboard.php');
         } else {
             $error = "Gagal memperbarui karya: " . $stmt->error;

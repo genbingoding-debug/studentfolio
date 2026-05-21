@@ -55,6 +55,7 @@ if (isset($_POST['register'])) {
                     if ($stmt->execute()) {
                         $sukses = "Akun berhasil dibuat! Silakan login menggunakan akun baru Anda.";
                         $in_nama = ""; $in_user = ""; // Kosongkan form setelah sukses
+                        redirect('login.php');
                     } else {
                         $error = "Gagal mendaftar ke database: " . $stmt->error;
                     }

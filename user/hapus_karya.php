@@ -3,6 +3,9 @@
 require '../includes/functions.php';
 require_user();
 
+// $conn sudah di-load di includes/functions.php (melalui config/koneksi.php)
+
+
 $id_portfolio = $_GET['id'] ?? 0;
 $id_user = $_SESSION['id_user'];
 
@@ -26,6 +29,10 @@ if ($result->num_rows > 0) {
     $stmt->bind_param('ii', $id_portfolio, $id_user);
     $stmt->execute();
 }
+
+// Set pesan informatif sebelum redirect
+$_SESSION['message'] = 'Karya berhasil dihapus.';
+$_SESSION['message_type'] = 'success';
 
 // Tendang balik ke dashboard
 redirect('dashboard.php');

@@ -3,6 +3,10 @@
 require '../includes/functions.php';
 require_user();
 
+// Pastikan koneksi database tersedia
+global $conn;
+
+
 if (isset($_POST['simpan'])) {
     $id_user = $_SESSION['id_user'];
     $id_kat = $_POST['id_kategori'];
@@ -35,6 +39,8 @@ if (isset($_POST['simpan'])) {
                 $stmt = $conn->prepare("INSERT INTO portfolio_data (id_user, id_kategori, judul_karya, deskripsi, file_bukti, tanggal_kegiatan) VALUES (?, ?, ?, ?, ?, ?)");
                 $stmt->bind_param('iissss', $id_user, $id_kat, $judul, $deskripsi, $file_baru, $tanggal_kegiatan);
                 if ($stmt->execute()) {
+                    $_SESSION['message'] = 'Karya berhasil ditambahkan.';
+                    $_SESSION['message_type'] = 'success';
                     redirect('dashboard.php');
                 } else {
                     $error = "Gagal menyimpan karya: " . $stmt->error;
