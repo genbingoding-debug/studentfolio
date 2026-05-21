@@ -19,14 +19,20 @@ if (isset($_POST['tambah_kategori'])) {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        $pesan_error = "Kategori '" . htmlspecialchars($nama_kategori) . "' sudah ada!";
+        $_SESSION['message'] = "Kategori '" . htmlspecialchars($nama_kategori) . "' sudah ada!";
+        $_SESSION['message_type'] = 'warning';
+        redirect('kelola_kategori.php');
     } else {
         $stmt = $conn->prepare("INSERT INTO kategori_portfolio (nama_kategori) VALUES (?)");
         $stmt->bind_param('s', $nama_kategori);
         if ($stmt->execute()) {
-            $pesan_sukses = "Kategori baru berhasil ditambahkan!";
+            $_SESSION['message'] = "Kategori baru berhasil ditambahkan!";
+            $_SESSION['message_type'] = 'success';
+            redirect('kelola_kategori.php');
         } else {
-            $pesan_error = "Gagal menambah kategori: " . $stmt->error;
+            $_SESSION['message'] = "Gagal menambah kategori: " . $stmt->error;
+            $_SESSION['message_type'] = 'danger';
+            redirect('kelola_kategori.php');
         }
     }
 }
@@ -41,9 +47,13 @@ if (isset($_POST['edit_kategori'])) {
     $stmt = $conn->prepare("UPDATE kategori_portfolio SET nama_kategori = ? WHERE id_kategori = ?");
     $stmt->bind_param('si', $nama_baru, $id_kategori);
     if ($stmt->execute()) {
-        $pesan_sukses = "Nama kategori berhasil diperbarui!";
+        $_SESSION['message'] = "Nama kategori berhasil diperbarui!";
+        $_SESSION['message_type'] = 'success';
+        redirect('kelola_kategori.php');
     } else {
-        $pesan_error = "Gagal memperbarui kategori: " . $stmt->error;
+        $_SESSION['message'] = "Gagal memperbarui kategori: " . $stmt->error;
+        $_SESSION['message_type'] = 'danger';
+        redirect('kelola_kategori.php');
     }
 }
 
@@ -59,12 +69,18 @@ if (isset($_GET['hapus'])) {
     $stmt->bind_param('i', $id_hapus);
     if ($stmt->execute()) {
         if ($stmt->affected_rows > 0) {
-            $pesan_sukses = "Kategori berhasil dihapus!";
+            $_SESSION['message'] = "Kategori berhasil dihapus!";
+            $_SESSION['message_type'] = 'success';
+            redirect('kelola_kategori.php');
         } else {
-            $pesan_error = "Kategori tidak ditemukan atau tidak bisa dihapus.";
+            $_SESSION['message'] = "Kategori tidak ditemukan atau tidak bisa dihapus.";
+            $_SESSION['message_type'] = 'warning';
+            redirect('kelola_kategori.php');
         }
     } else {
-        $pesan_error = "Kategori tidak bisa dihapus karena sedang digunakan oleh portfolio mahasiswa.";
+        $_SESSION['message'] = "Kategori tidak bisa dihapus karena sedang digunakan oleh portfolio mahasiswa.";
+        $_SESSION['message_type'] = 'danger';
+        redirect('kelola_kategori.php');
     }
 }
 
@@ -87,19 +103,7 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php if ($pesan_sukses): ?>
-    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
-        <?= $pesan_sukses; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
 
-<?php if ($pesan_error): ?>
-    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
-        <?= $pesan_error; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
 
 <div class="row g-4">
     <div class="col-md-4">

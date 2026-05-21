@@ -15,7 +15,11 @@ $stmt->execute();
 $result = $stmt->get_result();
 $data = $result->fetch_assoc();
 
-if (!$data) { die("Data tidak ditemukan atau bukan milikmu!"); }
+if (!$data) { 
+    $_SESSION['message'] = 'Data tidak ditemukan atau bukan milikmu!';
+    $_SESSION['message_type'] = 'warning';
+    redirect('dashboard.php');
+}
 
 // Ambil daftar kategori untuk dropdown
 $kategori = [];
@@ -39,9 +43,13 @@ if (isset($_POST['update'])) {
     }
 
     if (!$valid_category) {
-        $error = 'Kategori tidak valid.';
+        $_SESSION['message'] = 'Kategori tidak valid.';
+        $_SESSION['message_type'] = 'danger';
+        redirect('edit_karya.php?id=' . $id_portfolio);
     } elseif (empty($tanggal_kegiatan)) {
-        $error = 'Tanggal kegiatan tidak boleh kosong.';
+        $_SESSION['message'] = 'Tanggal kegiatan tidak boleh kosong.';
+        $_SESSION['message_type'] = 'danger';
+        redirect('edit_karya.php?id=' . $id_portfolio);
     } else {
         // Variabel untuk file baru
         $nama_file = $_FILES['bukti']['name'];
@@ -76,17 +84,25 @@ if (isset($_POST['update'])) {
                         $_SESSION['message_type'] = 'success';
                         redirect('dashboard.php');
                     } else {
-                        $error = "Gagal memperbarui karya: " . $stmt->error;
+                        $_SESSION['message'] = 'Gagal memperbarui karya: ' . $stmt->error;
+                        $_SESSION['message_type'] = 'danger';
+                        redirect('edit_karya.php?id=' . $id_portfolio);
                     }
 
                 } else {
-                    $error = "Sistem gagal menyimpan file ke folder server.";
+                    $_SESSION['message'] = 'Sistem gagal menyimpan file ke folder server.';
+                    $_SESSION['message_type'] = 'danger';
+                    redirect('edit_karya.php?id=' . $id_portfolio);
                 }
             } else {
-                $error = "Gagal: Ukuran file terlalu besar! Maksimal 5 MB.";
+                $_SESSION['message'] = 'Gagal: Ukuran file terlalu besar! Maksimal 5 MB.';
+                $_SESSION['message_type'] = 'warning';
+                redirect('edit_karya.php?id=' . $id_portfolio);
             }
         } else {
-            $error = "Ditolak: Terdeteksi file tidak aman! Hanya boleh PDF, ZIP, JPG, dan PNG.";
+            $_SESSION['message'] = 'Ditolak: Terdeteksi file tidak aman! Hanya boleh PDF, ZIP, JPG, dan PNG.';
+            $_SESSION['message_type'] = 'warning';
+            redirect('edit_karya.php?id=' . $id_portfolio);
         }
     } 
     // JIKA TIDAK ADA FILE BARU (Hanya ubah teks)
@@ -98,7 +114,9 @@ if (isset($_POST['update'])) {
             $_SESSION['message_type'] = 'success';
             redirect('dashboard.php');
         } else {
-            $error = "Gagal memperbarui karya: " . $stmt->error;
+            $_SESSION['message'] = 'Gagal memperbarui karya: ' . $stmt->error;
+            $_SESSION['message_type'] = 'danger';
+            redirect('edit_karya.php?id=' . $id_portfolio);
         }
     }
     }
@@ -113,7 +131,7 @@ include '../includes/header.php';
         <div class="card p-4 shadow-sm border-0 rounded-3 auth-card">
             <h4 class="mb-4">Edit Karya</h4>
             
-            <?php if(isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
+
             
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">

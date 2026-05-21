@@ -125,38 +125,6 @@ include '../includes/header.php';
     <?php endif; ?>
 </div>
 
-<?php
-// Tampilkan pesan setelah aksi (create/update/delete) dari session
-if (!empty($_SESSION['message'])):
-    $message = $_SESSION['message'];
-    $type = $_SESSION['message_type'] ?? 'success';
-    $alertClass = 'alert alert-success';
-    $icon = 'bi bi-check-circle-fill';
 
-    if ($type === 'error') {
-        $alertClass = 'alert alert-danger';
-        $icon = 'bi bi-exclamation-triangle-fill';
-    } elseif ($type === 'warning') {
-        $alertClass = 'alert alert-warning';
-        $icon = 'bi bi-exclamation-triangle-fill';
-    } elseif ($type === 'info') {
-        $alertClass = 'alert alert-info';
-        $icon = 'bi bi-info-circle-fill';
-    }
-    ?>
-
-    <div class="alert-container">
-        <div class="<?= $alertClass ?> alert-dismissible fade show" role="alert">
-            <i class="<?= $icon ?> me-2"></i>
-            <?= esc($message); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    </div>
-
-<?php
-    // Hapus pesan agar tidak tampil lagi di refresh berikutnya
-    unset($_SESSION['message'], $_SESSION['message_type']);
-endif;
-?>
 
 <?php include '../includes/footer.php'; ?>

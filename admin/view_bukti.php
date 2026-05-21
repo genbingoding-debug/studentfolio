@@ -11,6 +11,12 @@ $stmt->execute();
 $result = $stmt->get_result();
 $data = $result->fetch_assoc();
 
+if (!$data) {
+    $_SESSION['message'] = 'Portfolio tidak ditemukan atau tidak bisa diakses.';
+    $_SESSION['message_type'] = 'warning';
+    redirect('kelola_portfolio.php');
+}
+
 $page_css = ['admin.css'];
 include '../includes/header.php';
 ?>
@@ -30,9 +36,7 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php if (!$data): ?>
-    <div class="alert alert-danger">Portfolio tidak ditemukan atau tidak bisa diakses.</div>
-<?php else:
+<?php
     $fileName = htmlspecialchars($data['file_bukti']);
     $filePath = '../uploads/bukti_karya/' . $fileName;
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
@@ -71,6 +75,5 @@ include '../includes/header.php';
             </div>
         </div>
     </div>
-<?php endif; ?>
 
 <?php include '../includes/footer.php'; ?>

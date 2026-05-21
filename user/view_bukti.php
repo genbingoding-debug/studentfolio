@@ -11,6 +11,12 @@ $stmt->execute();
 $result = $stmt->get_result();
 $data = $result->fetch_assoc();
 
+if (!$data) {
+    $_SESSION['message'] = 'Bukti tidak ditemukan atau Anda tidak memiliki akses.';
+    $_SESSION['message_type'] = 'warning';
+    redirect('dashboard.php');
+}
+
 $page_css = ['user.css'];
 include '../includes/header.php';
 ?>
@@ -30,9 +36,7 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php if (!$data): ?>
-    <div class="alert alert-danger">Bukti tidak ditemukan atau Anda tidak memiliki akses.</div>
-<?php else:
+<?php
     $fileName = htmlspecialchars($data['file_bukti']);
     $filePath = '../uploads/bukti_karya/' . $fileName;
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
@@ -69,6 +73,5 @@ include '../includes/header.php';
             </div>
         </div>
     </div>
-<?php endif; ?>
 
 <?php include '../includes/footer.php'; ?>

@@ -14,7 +14,9 @@ if (isset($_POST['simpan'])) {
     $tanggal_kegiatan = trim($_POST['tanggal_kegiatan']);
 
     if (empty($tanggal_kegiatan)) {
-        $error = 'Tanggal kegiatan diperlukan.';
+        $_SESSION['message'] = 'Tanggal kegiatan diperlukan.';
+        $_SESSION['message_type'] = 'danger';
+        redirect('tambah_karya.php');
     }
 
     if (!isset($error)) {
@@ -42,16 +44,24 @@ if (isset($_POST['simpan'])) {
                     $_SESSION['message_type'] = 'success';
                     redirect('dashboard.php');
                 } else {
-                    $error = "Gagal menyimpan karya: " . $stmt->error;
+                    $_SESSION['message'] = 'Gagal menyimpan karya: ' . $stmt->error;
+                    $_SESSION['message_type'] = 'danger';
+                    redirect('tambah_karya.php');
                 }
             } else {
-                $error = "Sistem gagal menyimpan file ke folder server.";
+                $_SESSION['message'] = 'Sistem gagal menyimpan file ke folder server.';
+                $_SESSION['message_type'] = 'danger';
+                redirect('tambah_karya.php');
             }
         } else {
-            $error = "Ditolak: Ukuran file terlalu besar! Maksimal 5 MB.";
+            $_SESSION['message'] = 'Ditolak: Ukuran file terlalu besar! Maksimal 5 MB.';
+            $_SESSION['message_type'] = 'warning';
+            redirect('tambah_karya.php');
         }
     } else {
-        $error = "Ditolak: Terdeteksi file tidak aman! Hanya boleh PDF, ZIP, JPG, dan PNG.";
+        $_SESSION['message'] = 'Ditolak: Terdeteksi file tidak aman! Hanya boleh PDF, ZIP, JPG, dan PNG.';
+        $_SESSION['message_type'] = 'warning';
+        redirect('tambah_karya.php');
     }
     }
 }
@@ -73,13 +83,11 @@ include '../includes/header.php';
         <div class="card p-4 shadow-sm border-0 rounded-3 auth-card">
             <h4 class="fw-bold mb-3">Tambah Karya Baru</h4>
             
-            <?php if(isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
-            
-            <?php if (!$has_categories): ?>
-                <div class="alert alert-warning">
-                    Belum ada jenis portfolio. Silakan minta Admin untuk menambahkan kategori terlebih dahulu.
-                </div>
-            <?php endif; ?>
+            <?php if (!$has_categories): 
+                // Tampilkan pesan menggunakan toast global
+                $_SESSION['message'] = 'Belum ada jenis portfolio. Silakan minta Admin untuk menambahkan kategori terlebih dahulu.';
+                $_SESSION['message_type'] = 'warning';
+            endif; ?>
 
             <form method="POST" enctype="multipart/form-data">
                 <div class="mb-3">

@@ -12,17 +12,27 @@ if (isset($_POST['ubah_role'])) {
     if ($id_target != $_SESSION['id_user']) {
         $stmt = $conn->prepare("UPDATE users SET role = ? WHERE id_user = ?");
         $stmt->bind_param('si', $role_baru, $id_target);
-        $stmt->execute();
+        if ($stmt->execute()) {
+            $_SESSION['message'] = 'Role pengguna berhasil diperbarui.';
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = 'Gagal memperbarui role: ' . $stmt->error;
+            $_SESSION['message_type'] = 'danger';
+        }
+    } else {
+        $_SESSION['message'] = 'Tidak dapat mengubah role akun Anda sendiri.';
+        $_SESSION['message_type'] = 'warning';
     }
+    redirect('kelola_user.php');
 }
 
 // Proses Logika Hapus User
-$pesan_sukses = "";
-$pesan_error = "";
 if (isset($_GET['hapus'])) {
     $id_hapus = (int) $_GET['hapus'];
     if ($id_hapus == $_SESSION['id_user']) {
-        $pesan_error = "Tidak dapat menghapus akun Anda sendiri.";
+        $_SESSION['message'] = "Tidak dapat menghapus akun Anda sendiri.";
+        $_SESSION['message_type'] = 'warning';
+        redirect('kelola_user.php');
     } else {
         $stmt = $conn->prepare("SELECT file_bukti FROM portfolio_data WHERE id_user = ?");
         $stmt->bind_param('i', $id_hapus);
@@ -43,10 +53,13 @@ if (isset($_GET['hapus'])) {
         $stmt = $conn->prepare("DELETE FROM users WHERE id_user = ?");
         $stmt->bind_param('i', $id_hapus);
         if ($stmt->execute()) {
-            $pesan_sukses = "Pengguna dan semua portofolionya berhasil dihapus.";
+            $_SESSION['message'] = "Pengguna dan semua portofolionya berhasil dihapus.";
+            $_SESSION['message_type'] = 'success';
         } else {
-            $pesan_error = "Gagal menghapus pengguna: " . $stmt->error;
+            $_SESSION['message'] = "Gagal menghapus pengguna: " . $stmt->error;
+            $_SESSION['message_type'] = 'danger';
         }
+        redirect('kelola_user.php');
     }
 }
 
@@ -63,18 +76,7 @@ include '../includes/header.php';
             <h4 class="fw-bold">Manajemen Otoritas Pengguna</h4>
             <a href="dashboard.php" class="btn btn-sm btn-secondary">Kembali ke Dashboard</a>
         </div>
-        <?php if ($pesan_sukses): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= esc($pesan_sukses); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-        <?php if ($pesan_error): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?= esc($pesan_error); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
+
         
         <div class="table-responsive bg-white shadow-sm rounded-3">
             <table class="table table-hover align-middle mb-0">

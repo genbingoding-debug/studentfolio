@@ -22,9 +22,13 @@ if (isset($_POST['register'])) {
 
     // 2. Validasi Password
     if (strlen($password) <= 8) {
-        $error = "Password harus lebih dari 8 karakter!";
+        $_SESSION['message'] = 'Password harus lebih dari 8 karakter!';
+        $_SESSION['message_type'] = 'danger';
+        redirect('register.php');
     } elseif (!preg_match("/[a-zA-Z]/", $password) || !preg_match("/[0-9]/", $password)) {
-        $error = "Password harus kombinasi huruf dan angka!";
+        $_SESSION['message'] = 'Password harus kombinasi huruf dan angka!';
+        $_SESSION['message_type'] = 'danger';
+        redirect('register.php');
     } else {
         // 3. Cek apakah username sudah ada
         $stmt = $conn->prepare("SELECT id_user FROM users WHERE username = ?");
@@ -33,7 +37,9 @@ if (isset($_POST['register'])) {
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            $error = "Username sudah dipakai, silakan cari yang lain!";
+            $_SESSION['message'] = 'Username sudah dipakai, silakan cari yang lain!';
+            $_SESSION['message_type'] = 'warning';
+            redirect('register.php');
         } else {
             // 4. Validasi Ekstensi Foto
             $ekstensi_diperbolehkan = ['png', 'jpg', 'jpeg'];
@@ -53,17 +59,26 @@ if (isset($_POST['register'])) {
                     $stmt->bind_param('ssss', $in_nama, $in_user, $pass_hash, $foto_unik);
 
                     if ($stmt->execute()) {
-                        $sukses = "Akun berhasil dibuat! Silakan login menggunakan akun baru Anda.";
-                        $in_nama = ""; $in_user = ""; // Kosongkan form setelah sukses
+                        // Akun berhasil dibuat — tampilkan notifikasi informatif setelah redirect
+                        $_SESSION['message'] = 'Akun berhasil dibuat. Silakan login menggunakan akun baru Anda.';
+                        $_SESSION['message_type'] = 'success';
+                        $in_nama = ""; $in_user = "";
+
                         redirect('login.php');
                     } else {
-                        $error = "Gagal mendaftar ke database: " . $stmt->error;
+                        $_SESSION['message'] = 'Gagal mendaftar ke database: ' . $stmt->error;
+                        $_SESSION['message_type'] = 'danger';
+                        redirect('register.php');
                     }
                 } else {
-                    $error = "Gagal mengunggah foto profil. Pastikan folder uploads/profil/ tersedia.";
+                    $_SESSION['message'] = 'Gagal mengunggah foto profil. Pastikan folder uploads/profil/ tersedia.';
+                    $_SESSION['message_type'] = 'danger';
+                    redirect('register.php');
                 }
             } else {
-                $error = "Format foto tidak valid. Hanya diperbolehkan file PNG, JPG, atau JPEG.";
+                $_SESSION['message'] = 'Format foto tidak valid. Hanya diperbolehkan file PNG, JPG, atau JPEG.';
+                $_SESSION['message_type'] = 'warning';
+                redirect('register.php');
             }
         }
     }
@@ -71,19 +86,13 @@ if (isset($_POST['register'])) {
 
 include 'includes/header.php';
 ?>
-
+// html bagian form pendaftaran
 <div class="row justify-content-center mt-4 mb-5">
     <div class="col-md-5">
         <div class="card shadow-sm p-4 border-0 rounded-3 auth-card">
             <h3 class="text-center fw-bold mb-4">Daftar Akun Baru</h3>
             
-            <?php if($error): ?>
-                <div class='alert alert-danger shadow-sm'><i class="bi bi-exclamation-triangle-fill me-2"></i><?= $error; ?></div>
-            <?php endif; ?>
-            
-            <?php if($sukses): ?>
-                <div class='alert alert-success shadow-sm'><i class="bi bi-check-circle-fill me-2"></i><?= $sukses; ?></div>
-            <?php endif; ?>
+
 
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">

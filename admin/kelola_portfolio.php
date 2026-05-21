@@ -24,13 +24,17 @@ if (isset($_GET['hapus'])) {
         $stmt = $conn->prepare("DELETE FROM portfolio_data WHERE id_portfolio = ?");
         $stmt->bind_param('i', $id_hapus);
         if ($stmt->execute()) {
-            $pesan_sukses = "Portfolio berhasil dihapus.";
+            $_SESSION['message'] = "Portfolio berhasil dihapus.";
+            $_SESSION['message_type'] = 'success';
         } else {
-            $pesan_error = "Gagal menghapus portfolio: " . $stmt->error;
+            $_SESSION['message'] = "Gagal menghapus portfolio: " . $stmt->error;
+            $_SESSION['message_type'] = 'danger';
         }
     } else {
-        $pesan_error = "Portfolio tidak ditemukan.";
+        $_SESSION['message'] = "Portfolio tidak ditemukan.";
+        $_SESSION['message_type'] = 'warning';
     }
+    redirect('kelola_portfolio.php');
 }
 
 // Pencarian/filter sederhana untuk admin
@@ -67,19 +71,7 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php if ($pesan_sukses): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= esc($pesan_sukses); ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
 
-<?php if ($pesan_error): ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?= esc($pesan_error); ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
 
 <div class="table-responsive bg-white shadow-sm rounded-3">
     <table class="table table-hover align-middle mb-0">

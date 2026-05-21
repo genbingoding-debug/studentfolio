@@ -24,14 +24,23 @@ if (isset($_POST['login'])) {
             $_SESSION['nama'] = $row['nama'];
             $_SESSION['foto_profil'] = $row['foto_profil']; // Mengingat foto
 
-            if ($row['role'] == 'admin') header("Location: admin/dashboard.php"); 
+            // Notifikasi toast setelah login
+            $_SESSION['message'] = 'Selamat datang, ' . esc($row['nama']) . '! Anda berhasil masuk.';
+            $_SESSION['message_type'] = 'success';
+
+            if ($row['role'] == 'admin') header("Location: admin/dashboard.php");
             else header("Location: user/dashboard.php");
             exit;
         } else {
-            $error = "Password salah!";
+            // Gagal login -> tampilkan toast
+            $_SESSION['message'] = 'Password salah!';
+            $_SESSION['message_type'] = 'danger';
+            redirect('login.php');
         }
     } else {
-        $error = "Username tidak ditemukan!";
+        $_SESSION['message'] = 'Username tidak ditemukan!';
+        $_SESSION['message_type'] = 'danger';
+        redirect('login.php');
     }
 }
 
@@ -43,7 +52,7 @@ include 'includes/header.php';
         <div class="card p-4 shadow-sm auth-card">
             <h3 class="text-center mb-4">Login</h3>
             
-            <?php if(isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
+
 
             <form method="POST">
                 <div class="mb-3">
